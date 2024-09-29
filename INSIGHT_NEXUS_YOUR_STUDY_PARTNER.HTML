@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How Can We Assist You?</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            position: relative;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #1a1a2e; /* Dark sky background */
+        }
+
+        /* Background Scene */
+        .scene {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+	    /*background-color :#001d64;*/
+            background-image: url("C://Users//mailt//Desktop//adu_idea//background_1.jpg");
+            background-size: cover;
+            background-position: center;
+            z-index: 0;
+        }
+
+        /* Glowing Image */
+        .glow-image {
+            position: absolute;
+            top: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 100px;
+            background-image: url('C://Users//mailt//Desktop//adu_idea//logo.png'); /* Replace with your image path */
+            background-size: cover;
+            background-position: center;
+            border-radius: 50%; /* Optional: if you want to keep it circular */
+            animation: glow 3s infinite alternate;
+        }
+
+        /* Glow Animation */
+        @keyframes glow {
+            0% {
+                box-shadow: 0 0 10px 5px rgba(255, 255, 255, 0.5);
+            }
+            100% {
+                box-shadow: 0 0 50px 25px rgba(255, 255, 255, 1);
+            }
+        }
+
+        /* Container for the content */
+        .container {
+            max-width: 1000px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            position: relative;
+            z-index: 1;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .card {
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .icon {
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+
+        .card p {
+            margin: 0;
+            color: #666;
+        }
+
+        .dashboard {
+            margin-top: 20px;
+            display: none;
+        }
+
+        .persona {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+
+        .persona-item {
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            max-width: 300px;
+        }
+
+        .persona-item h2 {
+            font-size: 22px;
+            margin-bottom: 10px;
+        }
+
+        .persona-item p {
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .persona-item button {
+            background-color: #0073b1;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .persona-item button:hover {
+            background-color: #005f8a;
+        }
+    </style>
+</head>
+<body>
+    <div class="scene">
+        <div class="glow-image"></div>
+    </div>
+
+    <div class="container">
+        <h1>How Can We Assist You?</h1>
+        <div class="grid">
+            <div class="card" onclick="showInfo('User Feedback')">
+                <div class="icon">💬</div>
+                <p>User Feedback</p>
+            </div>
+            <div class="card" onclick="showInfo('Courses')">
+                <div class="icon">📚</div>
+                <p>Courses</p>
+            </div>
+            <div class="card" onclick="window.location.href='events.html'">
+                <div class="icon">🗓️</div>
+                <p>Upcoming Events</p>
+            </div>
+            <div class="card" onclick="window.location.href='community.html'">
+                <div class="icon">👥</div>
+                <p>Join Our Community</p>
+            </div>
+            <div class="card" onclick="window.location.href='connect_with_mentors.html'">
+                <div class="icon">📁</div>
+                <p>Offline Resources</p>
+            </div>
+            <div class="card" onclick="showPersonalDevelopment()">
+                <div class="icon">🌱</div>
+                <p>Personal Development</p>
+            </div>
+        </div>
+        <div class="dashboard" id="persona-content">
+            <div class="persona">
+                <div class="persona-item">
+                    <h2>Helping Hand</h2>
+                    <p>You are not alone! We are always with you</p>
+                    <button onclick="window.open('https://mental-health-ai-assistant.streamlit.app/', '_blank')">Visit Helping Hand</button>
+                </div>
+                <div class="persona-item">
+                    <h2>Career Development</h2>
+                    <p>Unleash Your Hidden Skill in You</p>
+                    <button onclick="window.open('career.html', '_blank')">Take Skill test</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showInfo(topic) {
+            if (topic === 'User Feedback') {
+                window.location.href = 'feedback.html'; // Redirect to feedback.html
+            } else if (topic === 'Courses') {
+                window.location.href = 'Learning_Dashboard.html'; // Redirect to smmarizer.html
+            } else {
+                alert(`You clicked on ${topic}. This is where you would show more information or navigate to a new page about ${topic}.`);
+            }
+        }
+
+        function showPersonalDevelopment() {
+            var personaContent = document.getElementById('persona-content');
+            if (personaContent.style.display === "none") {
+                personaContent.style.display = "block";
+            } else {
+                personaContent.style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>

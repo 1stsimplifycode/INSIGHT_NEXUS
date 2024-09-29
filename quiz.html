@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .quiz-container {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 400px;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+        }
+
+        .options label {
+            margin: 10px 0;
+            display: block;
+            cursor: pointer;
+        }
+
+        #next-btn {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            font-size: 16px;
+            margin-top: 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            width: 100%;
+        }
+
+        #next-btn:hover {
+            background-color: #45a049;
+        }
+
+        #message {
+            margin-top: 20px;
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <div id="question-box">
+            <h2 id="question-text">Question will appear here</h2>
+            <div class="options">
+                <label><input type="radio" name="option" value="0"> <span id="option0"></span></label><br>
+                <label><input type="radio" name="option" value="1"> <span id="option1"></span></label><br>
+                <label><input type="radio" name="option" value="2"> <span id="option2"></span></label><br>
+                <label><input type="radio" name="option" value="3"> <span id="option3"></span></label>
+            </div>
+        </div>
+        <button id="next-btn">Next</button>
+        <p id="message"></p>
+    </div>
+    <script>
+        const questions = [
+            {
+                question: "What can you do with Python?",
+                options: ["Web development", "Data Science", "Automation", "All of the above"],
+                correct: 3
+            },
+            {
+                question: "What is your first Python program?",
+                options: ["Hello, World!", "print('Hello, World!')", "echo 'Hello, World!'", "System.out.println('Hello, World!')"],
+                correct: 1
+            },
+            {
+                question: "What is a variable in Python?",
+                options: ["A constant value", "A storage location", "A type of loop", "A function"],
+                correct: 1
+            },
+            {
+                question: "How do you receive input in Python?",
+                options: ["input()", "scan()", "read()", "get()"],
+                correct: 0
+            },
+            {
+                question: "Which function converts types in Python?",
+                options: ["int()", "str()", "float()", "All of the above"],
+                correct: 3
+            },
+            {
+                question: "What is a string in Python?",
+                options: ["A sequence of characters", "A type of loop", "A numerical value", "A type of function"],
+                correct: 0
+            },
+            {
+                question: "Which operator is used for multiplication in Python?",
+                options: ["x", "*", "/", "%"],
+                correct: 1
+            },
+            {
+                question: "What determines the order of operations in Python?",
+                options: ["Left to right", "Precedence rules", "Alphabetical order", "None of the above"],
+                correct: 1
+            },
+            {
+                question: "Which operator is used for comparison in Python?",
+                options: ["==", "=", "&&", "||"],
+                correct: 0
+            }
+        ];
+
+        let currentQuestionIndex = 0;
+        let attempt = 0;
+        let incorrectQuestions = [];
+
+        function loadQuestion() {
+            const currentQuestion = questions[currentQuestionIndex];
+            document.getElementById('question-text').textContent = currentQuestion.question;
+            for (let i = 0; i < currentQuestion.options.length; i++) {
+                document.getElementById(`option${i}`).textContent = currentQuestion.options[i];
+            }
+        }
+
+        function checkAnswer() {
+            const selectedOption = document.querySelector('input[name="option"]:checked');
+            if (!selectedOption) {
+                document.getElementById('message').textContent = "Please select an answer!";
+                return false;
+            }
+            const answerIndex = parseInt(selectedOption.value);
+            if (answerIndex !== questions[currentQuestionIndex].correct) {
+                incorrectQuestions.push(currentQuestionIndex);
+            }
+            return true;
+        }
+
+        function nextQuestion() {
+            if (checkAnswer()) {
+                document.getElementById('message').textContent = "";
+                currentQuestionIndex++;
+                if (currentQuestionIndex < questions.length) {
+                    loadQuestion();
+                } else {
+                    if (incorrectQuestions.length > 0 && attempt < 2) {
+                        currentQuestionIndex = 0;
+                        attempt++;
+                        alert(`You got some answers wrong. Attempting similar questions... (Attempt ${attempt + 1})`);
+                        const newQuestions = incorrectQuestions.map(index => questions[index]);
+                        incorrectQuestions = [];
+                        questions.splice(0, questions.length, ...newQuestions);
+                        loadQuestion();
+                    } else {
+                        alert("Quiz completed!");
+                        document.getElementById('next-btn').disabled = true;
+                    }
+                }
+            }
+        }
+
+        document.getElementById('next-btn').addEventListener('click', nextQuestion);
+
+        // Load the first question when the page loads
+        window.onload = loadQuestion;
+    </script>
+</body>
+</html>

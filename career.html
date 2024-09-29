@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Career Guidance Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .question-container {
+            background: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .options-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .options-list li {
+            margin: 10px 0;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s, transform 0.2s;
+            outline: none;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        button.selected {
+            background-color: #28a745;
+        }
+
+        button.disabled {
+            cursor: not-allowed;
+            background-color: #6c757d;
+        }
+
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .nav-button {
+            background-color: #6c757d;
+        }
+
+        .submit-button {
+            background-color: #28a745;
+        }
+
+        .exit-button {
+            background-color: #dc3545;
+        }
+
+        .result-container {
+            background: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .restart-button, .exit-button {
+            margin: 10px;
+            font-size: 16px;
+        }
+
+        .restart-button {
+            background-color: #007bff;
+        }
+
+        .restart-button:hover {
+            background-color: #0056b3;
+        }
+
+        .exit-button:hover {
+            background-color: #c82333;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <h1>Career Guidance Quiz</h1>
+        <div v-if="result === null">
+            <div v-if="questionIndex < quiz.questions.length">
+                <div class="question-container">
+                    <h2>Question {{ questionIndex + 1 }}:</h2>
+                    <p>{{ quiz.questions[questionIndex].text }}</p>
+                    <ul class="options-list">
+                        <li v-for="(response, index) in quiz.questions[questionIndex].responses" :key="index">
+                            <button 
+                                @click="selectOption(index)" 
+                                :class="{'selected': userResponses[questionIndex] === index, 'disabled': userResponses[questionIndex] !== null}"
+                            >
+                                {{ response.text }}
+                            </button>
+                        </li>
+                    </ul>
+                    <div class="navigation-buttons">
+                        <button @click="prev" v-if="questionIndex > 0" class="nav-button">Previous</button>
+                        <button @click="next" v-if="questionIndex < quiz.questions.length - 1" class="nav-button">Next</button>
+                        <button @click="score" v-if="questionIndex === quiz.questions.length - 1" class="submit-button">Submit</button>
+                        <button @click="exit" class="exit-button">Exit Quiz</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div v-else>
+            <div class="result-container">
+                <h2>Recommended Career Path: {{ result }}</h2>
+                <p>Based on your answers, a career in <strong>{{ result }}</strong> might be a great fit for you!</p>
+                <button @click="restart" class="restart-button">Restart Quiz</button>
+                <button @click="exit" class="exit-button">Exit Quiz</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script>
+    <script>
+        var quiz = {
+            user: "User",
+            questions: [
+                {
+                    text: "Which of the following tasks sounds the most interesting to you?",
+                    responses: [
+                        { text: "Designing and developing software applications", field: "Software Development" },
+                        { text: "Working with data and extracting insights from it", field: "Data Science" },
+                        { text: "Managing networks and ensuring cybersecurity", field: "Cybersecurity" },
+                        { text: "Designing algorithms and solving complex problems", field: "Algorithm Design" }
+                    ]
+                },
+                {
+                    text: "Which type of environment do you prefer?",
+                    responses: [
+                        { text: "Collaborative team environments", field: "Project Management" },
+                        { text: "Working independently on detailed tasks", field: "Algorithm Design" },
+                        { text: "A mix of both", field: "Software Development" },
+                        { text: "I prefer to work remotely", field: "Freelance Development" }
+                    ]
+                },
+                {
+                    text: "Which of these subjects did you enjoy the most in school?",
+                    responses: [
+                        { text: "Mathematics and problem-solving", field: "Algorithm Design" },
+                        { text: "Art and Design", field: "UI/UX Design" },
+                        { text: "Science and Technology", field: "Software Development" },
+                        { text: "Writing and Literature", field: "Technical Writing" }
+                    ]
+                },
+                {
+                    text: "What type of projects excite you?",
+                    responses: [
+                        { text: "Building mobile apps or websites", field: "Software Development" },
+                        { text: "Analyzing big data to find trends and patterns", field: "Data Science" },
+                        { text: "Creating secure networks and systems", field: "Cybersecurity" },
+                        { text: "Developing machine learning algorithms", field: "Machine Learning" }
+                    ]
+                },
+                {
+                    text: "What is your preferred way to solve a problem?",
+                    responses: [
+                        { text: "Writing code and debugging it", field: "Software Development" },
+                        { text: "Using visual design tools", field: "UI/UX Design" },
+                        { text: "Analyzing data to find patterns", field: "Data Science" },
+                        { text: "Collaborating with a team to brainstorm solutions", field: "Project Management" }
+                    ]
+                },
+                {
+                    text: "What is your long-term career goal?",
+                    responses: [
+                        { text: "To become a software engineer or developer", field: "Software Development" },
+                        { text: "To work in data science or artificial intelligence", field: "Data Science" },
+                        { text: "To specialize in cybersecurity", field: "Cybersecurity" },
+                        { text: "To lead projects and teams in a tech company", field: "Project Management" }
+                    ]
+                },
+                {
+                    text: "Which of these would you enjoy most as a daily activity?",
+                    responses: [
+                        { text: "Writing and testing code", field: "Software Development" },
+                        { text: "Analyzing data sets", field: "Data Science" },
+                        { text: "Designing user interfaces", field: "UI/UX Design" },
+                        { text: "Setting up and managing servers", field: "System Administration" }
+                    ]
+                },
+                {
+                    text: "What kind of impact do you want to have in your career?",
+                    responses: [
+                        { text: "Create innovative software solutions", field: "Software Development" },
+                        { text: "Enhance data-driven decision-making", field: "Data Science" },
+                        { text: "Improve security and privacy online", field: "Cybersecurity" },
+                        { text: "Lead and inspire a tech team", field: "Project Management" }
+                    ]
+                },
+                {
+                    text: "What is your preferred work style?",
+                    responses: [
+                        { text: "Focused and detail-oriented", field: "Algorithm Design" },
+                        { text: "Creative and design-focused", field: "UI/UX Design" },
+                        { text: "Analytical and data-driven", field: "Data Science" },
+                        { text: "Collaborative and team-oriented", field: "Project Management" }
+                    ]
+                },
+                {
+                    text: "Which of these best describes your technical skills?",
+                    responses: [
+                        { text: "Proficient in programming languages like Python, Java, etc.", field: "Software Development" },
+                        { text: "Familiar with data analysis tools", field: "Data Science" },
+                        { text: "Knowledge of cybersecurity protocols", field: "Cybersecurity" },
+                        { text: "Experience in project management and teamwork", field: "Project Management" }
+                    ]
+                }
+            ]
+        };
+
+        new Vue({
+            el: '#app',
+            data: {
+                quiz: quiz,
+                questionIndex: 0,
+                userResponses: Array(quiz.questions.length).fill(null),
+                result: null
+            },
+            methods: {
+                selectOption(index) {
+                    this.userResponses.splice(this.questionIndex, 1, index);
+                },
+                next() {
+                    if (this.userResponses[this.questionIndex] !== null) {
+                        this.questionIndex++;
+                    }
+                },
+                prev() {
+                    if (this.questionIndex > 0) {
+                        this.questionIndex--;
+                    }
+                },
+                score() {
+                    let fieldScores = {};
+
+                    this.userResponses.forEach((responseIndex, i) => {
+                        let field = this.quiz.questions[i].responses[responseIndex].field;
+                        if (fieldScores[field]) {
+                            fieldScores[field]++;
+                        } else {
+                            fieldScores[field] = 1;
+                        }
+                    });
+
+                    let maxScore = 0;
+                    for (let field in fieldScores) {
+                        if (fieldScores[field] > maxScore) {
+                            maxScore = fieldScores[field];
+                            this.result = field;
+                        }
+                    }
+                },
+                restart() {
+                    this.questionIndex = 0;
+                    this.userResponses = Array(this.quiz.questions.length).fill(null);
+                    this.result = null;
+                },
+                exit() {
+                    this.result = "No career selected.";
+                }
+            }
+        });
+    </script>
+</body>
+</html>

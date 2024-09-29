@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Progress and Leaderboards</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
+
+        .chart-container {
+            width: 45%;
+            margin: 20px 0;
+        }
+
+        .leaderboard-container {
+            width: 100%;
+            margin: 20px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <h1>Progress and Leaderboards</h1>
+    <div class="container">
+        <!-- Pie Chart for Video Completion -->
+        <div class="chart-container">
+            <h2>Video Completion</h2>
+            <canvas id="videoCompletionChart"></canvas>
+        </div>
+
+        <!-- Pie Chart for Quiz Creation -->
+        <div class="chart-container">
+            <h2>Quiz Creation</h2>
+            <canvas id="quizCreationChart"></canvas>
+        </div>
+
+        <!-- Bar Chart for Students' Quiz Marks -->
+        <div class="chart-container">
+            <h2>Students' Quiz Marks</h2>
+            <canvas id="quizMarksChart"></canvas>
+        </div>
+    </div>
+
+    <!-- Leaderboard for Quiz Marks -->
+    <div class="leaderboard-container">
+        <h2>Leaderboard - Quiz Marks</h2>
+        <table id="quizLeaderboard">
+            <thead>
+                <tr>
+                    <th>Rank</th>
+                    <th>Student</th>
+                    <th>Marks</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Leaderboard data will be populated by JavaScript -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Leaderboard for Video Completion -->
+    <div class="leaderboard-container">
+        <h2>Leaderboard - Video Completion</h2>
+        <table id="videoLeaderboard">
+            <thead>
+                <tr>
+                    <th>Rank</th>
+                    <th>Student</th>
+                    <th>Videos Completed</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Leaderboard data will be populated by JavaScript -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        // Data for Video Completion Pie Chart
+        const videoCompletionData = {
+            labels: ['Completed', 'Remaining'],
+            datasets: [{
+                data: [120, 141], // Adjust according to the completed vs remaining videos
+                backgroundColor: ['#4CAF50', '#FF5733'],
+            }]
+        };
+
+        // Data for Quiz clearance Pie Chart
+        const quizCreationData = {
+            labels: ['Quizzes completed in 1st attempt', 'Quizzes completed in 2nd attempt'],
+            datasets: [{
+                data: [18, 11], // Adjust according to the created vs remaining quizzes
+                backgroundColor: ['#4CAF50', '#FF5733'],
+            }]
+        };
+
+        // Data for Students' Quiz Marks Bar Chart
+        const quizMarksData = {
+            labels: ['Student 1', 'Student 2', 'Student 3', 'Student 4', 'Student 5'],
+            datasets: [{
+                label: 'Marks',
+                data: [85, 90, 78, 88, 95], // Adjust according to student marks
+                backgroundColor: '#4CAF50',
+            }]
+        };
+
+        // Configurations for Charts
+        const videoCompletionConfig = {
+            type: 'pie',
+            data: videoCompletionData,
+        };
+
+        const quizCreationConfig = {
+            type: 'pie',
+            data: quizCreationData,
+        };
+
+        const quizMarksConfig = {
+            type: 'bar',
+            data: quizMarksData,
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        };
+
+        // Initialize Charts
+        const videoCompletionChart = new Chart(
+            document.getElementById('videoCompletionChart'),
+            videoCompletionConfig
+        );
+
+        const quizCreationChart = new Chart(
+            document.getElementById('quizCreationChart'),
+            quizCreationConfig
+        );
+
+        const quizMarksChart = new Chart(
+            document.getElementById('quizMarksChart'),
+            quizMarksConfig
+        );
+
+        // Data for Leaderboards
+        const quizLeaderboardData = [
+            { rank: 1, student: 'Student 5', marks: 95 },
+            { rank: 2, student: 'Student 2', marks: 90 },
+            { rank: 3, student: 'Student 4', marks: 88 },
+            { rank: 4, student: 'Student 1', marks: 85 },
+            { rank: 5, student: 'Student 3', marks: 78 },
+        ];
+
+        const videoLeaderboardData = [
+            { rank: 1, student: 'Student 1', videosCompleted: 250 },
+            { rank: 2, student: 'Student 3', videosCompleted: 240 },
+            { rank: 3, student: 'Student 5', videosCompleted: 230 },
+            { rank: 4, student: 'Student 2', videosCompleted: 220 },
+            { rank: 5, student: 'Student 4', videosCompleted: 210 },
+        ];
+
+        // Populate Leaderboards
+        const quizLeaderboard = document.getElementById('quizLeaderboard').getElementsByTagName('tbody')[0];
+        quizLeaderboardData.forEach((data, index) => {
+            const row = quizLeaderboard.insertRow(index);
+            row.insertCell(0).innerText = data.rank;
+            row.insertCell(1).innerText = data.student;
+            row.insertCell(2).innerText = data.marks;
+        });
+
+        const videoLeaderboard = document.getElementById('videoLeaderboard').getElementsByTagName('tbody')[0];
+        videoLeaderboardData.forEach((data, index) => {
+            const row = videoLeaderboard.insertRow(index);
+            row.insertCell(0).innerText = data.rank;
+            row.insertCell(1).innerText = data.student;
+            row.insertCell(2).innerText = data.videosCompleted;
+        });
+    </script>
+</body>
+</html>

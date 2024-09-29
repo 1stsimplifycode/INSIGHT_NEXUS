@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coursera Clone</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            height: 100%;
+        }
+        .container {
+            display: flex;
+            height: 100%;
+        }
+        .sidebar {
+            width: 250px;
+            background-color: #f8f9fa;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        .main-content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .top-bar {
+            background-color: white;
+            padding: 10px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .content-wrapper {
+            display: flex;
+            flex-grow: 1;
+        }
+        .center-content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .video-container {
+            background-color: black;
+            height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .quiz-area {
+            padding: 20px;
+            border-top: 1px solid #e0e0e0;
+        }
+        .ai-assistant {
+            width: 300px;
+            background-color: white;
+            border-left: 1px solid #e0e0e0;
+            display: flex;
+            flex-direction: column;
+        }
+        .ai-assistant-header {
+            background-color: #0056D2;
+            color: white;
+            padding: 10px;
+        }
+        .ai-assistant-body {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 10px;
+        }
+        .ai-assistant-input {
+            display: flex;
+            padding: 10px;
+            border-top: 1px solid #e0e0e0;
+        }
+        .ai-assistant-input input {
+            flex-grow: 1;
+            margin-right: 10px;
+        }
+        .btn {
+            background-color: #0056D2;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <h3>Course Content</h3>
+            <ul>
+                <li>Introduction</li>
+                <li>Week 1: Basics</li>
+                <li>Week 2: Advanced Topics</li>
+                <li>Final Project</li>
+            </ul>
+        </div>
+        <div class="main-content">
+            <div class="top-bar">
+                <input type="text" placeholder="Search for courses">
+            </div>
+            <div class="content-wrapper">
+                <div class="center-content">
+                    <div class="video-container">
+                        <div style="color: white;">Video Player Placeholder</div>
+                    </div>
+                    <div class="quiz-area">
+                        <h2>Quiz-taking tips and techniques</h2>
+                        <p>This is where the quiz content would be displayed, directly below the video.</p>
+                    </div>
+                </div>
+                <div class="ai-assistant">
+                    <div class="ai-assistant-header">
+                        <h3>AI Assistant</h3>
+                    </div>
+                    <div class="ai-assistant-body" id="aiAssistantBody">
+                        <p><strong>AI:</strong> How can I help?</p>
+                    </div>
+                    <div class="ai-assistant-input">
+                        <input type="text" id="userInput" placeholder="Type your message...">
+                        <button class="btn" onclick="sendMessage()">Send</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function sendMessage() {
+            const userInput = document.getElementById('userInput');
+            const aiAssistantBody = document.getElementById('aiAssistantBody');
+            
+            if (userInput.value.trim() !== '') {
+                const userMessage = document.createElement('p');
+                userMessage.innerHTML = '<strong>You:</strong> ' + userInput.value;
+                aiAssistantBody.appendChild(userMessage);
+                
+                const aiMessage = document.createElement('p');
+                aiMessage.innerHTML = '<strong>AI:</strong> This is a simulated response.';
+                aiAssistantBody.appendChild(aiMessage);
+                
+                userInput.value = '';
+                aiAssistantBody.scrollTop = aiAssistantBody.scrollHeight;
+            }
+        }
+    </script>
+</body>
+</html>

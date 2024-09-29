@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Library</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #333;
+            position: relative;
+            z-index: 0;
+            background-color: #0d1b2a; /* Dark dawn-like blue background */
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        /* Ripple Water Animation */
+        .ripple-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at center, rgba(0, 51, 102, 0.2), rgba(0, 51, 102, 0.05));
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.15);
+            animation: ripple 15s infinite;
+        }
+
+        @keyframes ripple {
+            0% {
+                transform: scale(0.5);
+                opacity: 1;
+            }
+
+            100% {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+
+        .ripple:nth-child(2) {
+            left: 20%;
+            top: 30%;
+            width: 150px;
+            height: 150px;
+            animation-delay: 5s;
+        }
+
+        .ripple:nth-child(3) {
+            left: 60%;
+            top: 20%;
+            width: 200px;
+            height: 200px;
+            animation-delay: 10s;
+        }
+
+        .ripple:nth-child(4) {
+            left: 80%;
+            top: 50%;
+            width: 250px;
+            height: 250px;
+            animation-delay: 7s;
+        }
+
+        .header {
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-bottom: 1px solid #e0e0e0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: normal;
+        }
+
+        .header-info {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+        }
+
+        .header-info div {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            padding: 10px 20px;
+            min-width: 120px;
+        }
+
+        .header-info div p {
+            margin: 0;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .header-info div:first-child p:first-child {
+            font-weight: bold;
+        }
+
+        .library-container {
+            display: flex;
+            margin: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .sidebar {
+            width: 200px;
+            padding-right: 20px;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .sidebar li {
+            font-size: 16px;
+            color: #666;
+            padding: 10px 0;
+            border-bottom: 1px solid #e0e0e0;
+            cursor: pointer;
+        }
+
+        .content {
+            flex: 1;
+        }
+
+        .course {
+            display: flex;
+            align-items: center;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .course:hover {
+            transform: translateY(-5px);
+        }
+
+        .course img {
+            width: 60px;
+            height: 60px;
+            margin-right: 20px;
+        }
+
+        .course-info {
+            flex-grow: 1;
+        }
+
+        .course-info h3 {
+            margin: 0;
+            font-size: 18px;
+            color: #333;
+        }
+
+        .course-info p {
+            margin: 5px 0;
+            font-size: 14px;
+            color: #888;
+        }
+
+        .progress {
+            width: 150px;
+            text-align: right;
+            margin-right: 20px;
+        }
+
+        .progress p {
+            margin: 5px 0;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .progress-bar {
+            background-color: #0073b1;
+            height: 5px;
+            border-radius: 3px;
+            margin-top: 10px;
+        }
+
+        .progress-bar-inner {
+            height: 100%;
+            background-color: #00a0dc;
+            border-radius: 3px;
+        }
+
+        .button-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .button-container button {
+            background-color: #f1f1f1;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 5px 10px;
+            cursor: pointer;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .button-container button:hover {
+            background-color: #e0e0e0;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Ripple Water Animation Background -->
+    <div class="ripple-background">
+        <div class="ripple"></div>
+        <div class="ripple"></div>
+        <div class="ripple"></div>
+    </div>
+
+    <div class="header">
+        <h1>My Library</h1>
+        <div class="header-info">
+            <div>
+                <p>Weekly goal (Aug 19 to Aug 25)</p>
+                <p>0/120 mins</p>
+            </div>
+            <div>
+                <p>Skills</p>
+                <p>13 followed skills</p>
+            </div>
+            <div>
+                <p>Skill Evaluations</p>
+                <p>0 evaluations</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="library-container">
+        <div class="sidebar">
+            <ul>
+                <li>In Progress (42)</li>
+                <li>Saved (38)</li>
+                <li>My Collections</li>
+                <li>Learning History (22)</li>
+            </ul>
+        </div>
+        <div class="content">
+            <div class="course" onclick="window.location.href='insigt_nexus_course_watch.html';">
+                <img src="Architecting with Python.png" alt="Architecting with Python ">
+                <div class="course-info">
+                    <h3>Architecting with Python </h3>
+                    <p>Insights Nexus</p>
+                    <p>Updated 4 months ago</p>
+                </div>
+                <div class="progress">
+                    <p>1h 17m 36s left</p>
+                    <div class="progress-bar">
+                        <div class="progress-bar-inner" style="width: 70%;"></div>
+                    </div>
+                </div>
+                <div class="button-container">
+                    <button>Share</button>
+                </div>
+            </div>
+            <div class="course">
+                <img src="Python Memory Management.jpg" alt="Python Memory Management">
+                <div class="course-info">
+                    <h3>Python Memory Management</h3>
+                    <p>Insights Nexus</p>
+                    <p>By: Doug Rose | Mar 2023</p>
+                </div>
+                <div class="progress">
+                    <p>1h 34m</p>
+                    <div class="progress-bar">
+                        <div class="progress-bar-inner" style="width: 90%;"></div>
+                    </div>
+                </div>
+                <div class="button-container">
+                    <button>Share</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>

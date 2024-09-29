@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Insight Nexus: Your Study Partner</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            height: 100%;
+        }
+        .container {
+            display: flex;
+            height: 100%;
+        }
+        .sidebar {
+            width: 250px;
+            background-color: #f8f9fa;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        .sidebar h3 {
+            margin-bottom: 20px;
+        }
+        .course-item {
+            background-color: #fff;
+            border: 1px solid #e0e0e0;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .course-item:hover {
+            background-color: #e6f3ff;
+        }
+        .main-content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .top-bar {
+            background-color: white;
+            padding: 10px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .content-wrapper {
+            display: flex;
+            flex-grow: 1;
+        }
+        .center-content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .video-container {
+            background-color: black;
+            height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .video-controls {
+            background-color: #f0f0f0;
+            padding: 10px;
+            text-align: center;
+        }
+        .quiz-area {
+            padding: 20px;
+            border-top: 1px solid #e0e0e0;
+        }
+        .ai-assistant {
+            width: 1200px;
+	    height: 720px;
+            background-color: white;
+            border-left: 1px solid #e0e0e0;
+            display: flex;
+            flex-direction: column;
+        }
+        .ai-assistant-header {
+            background-color: #0056D2;
+            color: white;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+        }
+        .ai-assistant-header h3 {
+            margin: 0;
+            margin-left: 10px;
+        }
+        .ai-assistant-body {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 10px;
+        }
+        .ai-assistant-input {
+            display: flex;
+            padding: 10px;
+            border-top: 1px solid #e0e0e0;
+        }
+        .ai-assistant-input input {
+            flex-grow: 1;
+            margin-right: 10px;
+        }
+        .btn {
+            background-color: #0056D2;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+        .ai-avatar {
+            width: 30px;
+            height: 30px;
+            background-color: #4285f4;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+        }
+        .quick-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .quick-action-btn {
+            background-color: #f0f0f0;
+            border: 1px solid #d0d0d0;
+            border-radius: 20px;
+            padding: 8px 15px;
+            cursor: pointer;
+            text-align: left;
+        }
+        .user-message {
+            background-color: #e6f3ff;
+            padding: 10px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+        .ai-message {
+            background-color: #f0f0f0;
+            padding: 10px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+        .quiz-container {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 1200px;
+	    height: 400px;
+            margin: 20px auto;
+        }
+        h2 {
+            margin-bottom: 20px;
+        }
+        .options label {
+            margin: 10px 0;
+            display: block;
+            cursor: pointer;
+        }
+        #next-btn {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            font-size: 16px;
+            margin-top: 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            width: 100%;
+        }
+        #next-btn:hover {
+            background-color: #45a049;
+        }
+        #message {
+            margin-top: 20px;
+            color: red;
+        }
+        #progress-bar-container, #path-progress-container {
+            width: 100%;
+            background-color: #e0e0e0;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        #progress-bar-fill, #path-progress-bar {
+            width: 0;
+            height: 20px;
+            background-color: #4CAF50;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+ 	<div class="sidebar">
+   	 <h3>Course Content</h3>
+         <div class="course-item">Introduction</div>
+    	 <div class="course-item">Week 1: Basics</div>
+    	 <div class="course-item">Week 2: Advanced Topics</div>
+    	 <div class="course-item">Final Project</div>
+    	 <!-- Add the dropdown here -->
+    	 <h3>Quick Links</h3>
+    	 <select id="dropdown" onchange="goToPage()">
+      	  <option value="">Select an option</option>
+      	  <option value="https://www.ssgopalganj.in/online/Class%20XII/Comp/Computer%20science%20PYTHON%20book%20pdf%20for%20class%2012.pdf">Python</option>
+    	 </select>
+	 <button id="markButton" onclick="markAsCompleted()">Mark as completed</button>
+	</div>
+
+        <div class="main-content">
+            <div class="top-bar">
+                <input type="text" placeholder="Search for courses">
+            </div>
+            <div class="content-wrapper">
+                <div class="center-content">
+                    <div class="video-container">
+                        <video id="courseVideo" width="100%" height="100%" controls>
+                            <source src="Python For Beginners.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                    </div>
+                    <div class="video-controls">
+                        <button onclick="toggleVideo()">Play/Pause</button>
+                        <button onclick="requestVideoSummary()">Request Video Summary</button>
+                    </div>
+                    
+                    <!-- New progress container -->
+                    <div class="progress-container">
+                        <div id="progress-bar-container">
+                            <div id="progress-bar-fill"></div>
+                        </div>
+                        <div class="progress-text">
+                            <span>Reading Time: <span id="readingTime">0 mins</span></span>
+                            <span>Total Time: <span id="totalTime">60 mins</span></span>
+                        </div>
+
+                        <div id="path-progress-container">
+                            <div id="path-progress-bar"></div>
+                        </div>
+                        <div class="progress-text">
+                            <span>Overall Progress: <span id="currentProgress">0%</span></span>
+                        </div>
+                    </div>
+                <div class="ai-assistant">
+                    <div class="ai-assistant-header">
+                        <div class="ai-avatar">AI</div>
+                        <h3>Coach</h3>
+                    </div>
+                    <div class="ai-assistant-body" id="aiAssistantBody">
+                        <p><strong>AI:</strong> Hi, Adishree! How can I help?</p>
+                        <div class="quick-actions">
+                            <button class="quick-action-btn" onclick="sendQuickAction('Explain this topic in simple terms')">Explain this topic in simple terms</button>
+                            <button class="quick-action-btn" onclick="sendQuickAction('Give me a summary')">Give me a summary</button>
+                            <button class="quick-action-btn" onclick="sendQuickAction('Give me practice questions')">Give me practice questions</button>
+                            <button class="quick-action-btn" onclick="sendQuickAction('Give me real-life examples')">Give me real-life examples</button>
+                        </div>
+                    </div>
+                    <div class="ai-assistant-input">
+                        <input type="text" id="userInput" placeholder="Ask me anything">
+                        <button class="btn" onclick="sendMessage()">Send</button>
+                    </div>
+                </div>
+
+                <div class="quiz-area">
+                        <div class="quiz-container">
+                            <div id="question-box">
+                                <h2 id="question-text">Question will appear here</h2>
+                                <div class="options">
+                                    <label><input type="radio" name="option" value="0"> <span id="option0"></span></label><br>
+                                    <label><input type="radio" name="option" value="1"> <span id="option1"></span></label><br>
+                                    <label><input type="radio" name="option" value="2"> <span id="option2"></span></label><br>
+                                    <label><input type="radio" name="option" value="3"> <span id="option3"></span></label>
+                                </div>
+                            </div>
+                            <button id="next-btn" onclick="nextQuestion()">Next</button>
+                            <p id="message"></p>
+                        </div>
+                  </div>
+
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let questions = [
+            {
+                question: "What is a correct syntax to output 'Hello World' in Python?",
+                options: ["echo 'Hello World'", "print('Hello World')", "p('Hello World')", "printf('Hello World')"],
+                correct: 1
+            },
+            {
+                question: "How do you create a variable with the numeric value 5?",
+                options: ["x = 5", "x = int(5)", "Both are correct", "None of the above"],
+                correct: 2
+            },
+            {
+                question: "Which of the following is a Python tuple?",
+                options: ["['apple', 'banana', 'cherry']", "('apple', 'banana', 'cherry')", "{'apple', 'banana', 'cherry'}", "None of the above"],
+                correct: 1
+            },
+            {
+                question: "How do you insert COMMENTS in Python code?",
+                options: ["#This is a comment", "//This is a comment", "/*This is a comment*/", "--This is a comment"],
+                correct: 0
+            },
+            {
+                question: "Which method can be used to remove any whitespace from both the beginning and the end of a string?",
+                options: ["ptrim()", "len()", "strip()", "trim()"],
+                correct: 2
+            },
+            {
+                question: "Which operator is used to multiply numbers in Python?",
+                options: ["x", "*", "/", "-"],
+                correct: 1
+            },
+            {
+                question: "Which of the following is correct for getting the data type of a variable?",
+                options: ["typeOf(x)", "type(x)", "typeof(x)", "None of the above"],
+                correct: 1
+            },
+            {
+                question: "Which of the following is a mutable data type?",
+                options: ["list", "tuple", "set", "Both list and set"],
+                correct: 3
+            },
+            {
+                question: "What keyword is used to create a function in Python?",
+                options: ["func", "function", "define", "def"],
+                correct: 3
+            },
+            {
+                question: "What is the correct file extension for Python files?",
+                options: [".pyth", ".pt", ".py", ".pyt"],
+                correct: 2
+            }
+        ];
+
+        let currentQuestionIndex = 0;
+        let wrongAnswers = [];
+
+        function loadQuestion() {
+            const questionText = document.getElementById("question-text");
+            const option0 = document.getElementById("option0");
+            const option1 = document.getElementById("option1");
+            const option2 = document.getElementById("option2");
+            const option3 = document.getElementById("option3");
+
+            questionText.innerText = questions[currentQuestionIndex].question;
+            option0.innerText = questions[currentQuestionIndex].options[0];
+            option1.innerText = questions[currentQuestionIndex].options[1];
+            option2.innerText = questions[currentQuestionIndex].options[2];
+            option3.innerText = questions[currentQuestionIndex].options[3];
+        }
+
+        function nextQuestion() {
+            const selectedOption = document.querySelector('input[name="option"]:checked');
+            const message = document.getElementById("message");
+
+            if (selectedOption) {
+                const answer = selectedOption.value;
+                if (answer == questions[currentQuestionIndex].correct) {
+                    message.innerText = "Correct!";
+                    message.style.color = "green";
+                } else {
+                    message.innerText = "Incorrect! This question will be reattempted later.";
+                    message.style.color = "red";
+                    wrongAnswers.push(questions[currentQuestionIndex]);
+                }
+
+                selectedOption.checked = false; // Uncheck the radio button
+
+                currentQuestionIndex++;
+                if (currentQuestionIndex < questions.length) {
+                    loadQuestion();
+                } else if (wrongAnswers.length > 0) {
+                    // Reattempt wrong answers
+                    questions = wrongAnswers;
+                    wrongAnswers = [];
+                    currentQuestionIndex = 0;
+                    message.innerText = "Reattempting incorrect answers.";
+                    message.style.color = "blue";
+                    loadQuestion();
+                } else {
+                    message.innerText = "Quiz Completed!";
+                    message.style.color = "green";
+                }
+            } else {
+                message.innerText = "Please select an option.";
+                message.style.color = "red";
+            }
+        }
+
+        function sendQuickAction(action) {
+	    const aiAssistantBody = document.getElementById("aiAssistantBody");
+
+            // Add user's action to chat box
+            const userMessage = document.createElement('div');
+            userMessage.className = 'user-message';
+            userMessage.innerHTML = `<strong>You:</strong> ${action}`;
+            aiAssistantBody.appendChild(userMessage);
+            let response;
+switch (action) {
+    case 'Explain this topic in simple terms':
+        response = "Python is a programming language that is easy to learn and use. It is great for beginners because its syntax is simple and clear. You can use Python for many things, like building websites, analyzing data, and even creating games.";
+        break;
+    case 'Give me a summary':
+        response = "Python is an easy-to-learn, high-level programming language. It is known for its clear and readable code.<br/>Variables and Data Types: Variables store data, and Python supports types like integers, floats, and strings. You don't need to declare types explicitly.<br/>Control Structures: Use <code>if</code> statements for decisions and <code>for</code> or <code>while</code> loops to repeat actions.<br/>Functions: Functions are blocks of reusable code defined with <code>def</code>. They can take arguments and return values.<br/>Modules: Modules are files with Python code. You import them to use their functions and variables.<br/>Exception Handling: Handle errors with <code>try</code> and <code>except</code> to keep your program running smoothly.<br/>File Handling: Read from and write to files using the <code>open()</code> function.<br/>Classes and Objects: Python supports object-oriented programming with classes and objects. Classes define the structure and behavior of objects.<br/>Libraries: Python has many libraries like <code>NumPy</code> and <code>Pandas</code> for tasks such as data analysis and web development.<br/>Syntax: Python uses indentation to define code blocks, making it easy to read and write.<br/>Interactive Mode: Run Python interactively to test and execute code line by line.<br/>";
+        break;
+    case 'Give me practice questions':
+        response = "Here are some beginner practice questions:<br/>1. How do you print 'Hello, World!' in Python?<br/>2. How do you create a variable named <code>number</code> with the value 5?<br/>3. What is the purpose of the <code>def</code> keyword in Python?<br/>4. How do you handle errors in Python using <code>try</code> and <code>except</code>?<br/>5. What does the <code>import</code> statement do?";
+        break;
+    case 'Give me real-life examples':
+        response = "Here are some simple examples of how Python is used:<br/>1. Building websites with frameworks like Flask.<br/>2. Analyzing data with tools like Pandas.<br/>3. Writing scripts to automate tasks like organizing files.<br/>4. Creating basic games or interactive applications.<br/>5. Learning and practicing programming concepts in a straightforward way.";
+        break;
+
+                default:
+                    response = "Sorry, I don't have information about that.";
+            }
+            // Add AI's response to chat box
+    	    const aiResponse = document.createElement('div');
+    	    aiResponse.className = 'ai-message';
+            aiResponse.innerHTML = `<strong>AI:</strong> ${response}`;
+            aiAssistantBody.appendChild(aiResponse);
+
+            // Scroll to the bottom of the chat box
+            aiAssistantBody.scrollTop = aiAssistantBody.scrollHeight;
+}
+
+        function sendMessage() {
+            const userInput = document.getElementById("userInput").value;
+            if (userInput.trim() !== "") {
+                const aiAssistantBody = document.getElementById("aiAssistantBody");
+                aiAssistantBody.innerHTML += `<div class="user-message"><strong>You:</strong> ${userInput}</div>`;
+                // Simulate AI response (could be improved with actual AI interaction)
+                aiAssistantBody.innerHTML += `<div class="ai-message"><strong>AI:</strong> I will process your request.</div>`;
+                document.getElementById("userInput").value = "";
+            }
+        }
+    function goToPage() {
+        var dropdown = document.getElementById("dropdown");
+        var url = dropdown.value;
+        if (url) {
+            window.location.href = url;
+        }
+    }
+    function markAsCompleted() {
+        var button = document.getElementById("markButton");
+        button.innerHTML = 'Marked as completed &#10003;'; // Tick mark symbol
+        button.disabled = true; // Optional: disable button after marking as completed
+    }
+        // Progress tracking logic
+        let readingTime = 0;
+        let totalTime = 60;  // Assuming a total of 60 minutes to finish a skill
+
+        function updateReadingStats() {
+            document.getElementById('readingTime').innerText = readingTime + ' mins';
+            document.getElementById('totalTime').innerText = totalTime + ' mins';
+
+            let progress = (readingTime / totalTime) * 100;
+            document.getElementById('progress-bar-fill').style.width = progress + '%';
+        }
+
+        function updateLearningPath(progress) {
+            document.getElementById('currentProgress').innerText = progress + '%';
+            document.getElementById('path-progress-bar').style.width = progress + '%';
+        }
+
+        // Mock progress update (This should be updated based on actual data)
+        setInterval(function() {
+            readingTime += 1;  // Increase reading time every minute
+            updateReadingStats();
+
+            let pathProgress = Math.min(100, (readingTime / totalTime) * 100);
+            updateLearningPath(pathProgress);
+        }, 10000);  // Update every 60 seconds
+
+        // Initial question load
+        loadQuestion();
+    </script>
+</body>
+</html>

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instructor Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .form-group {
+            margin: 20px 0;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="file"],
+        input[type="url"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .button:hover {
+            background-color: #45a049;
+        }
+
+        .learning-paths {
+            margin-top: 30px;
+        }
+
+        .path-item {
+            background-color: white;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Instructor Dashboard</h1>
+    </div>
+    <div class="container">
+        <div class="form-group">
+            <label for="resource-title">Resource Title:</label>
+            <input type="text" id="resource-title" placeholder="Enter the title of the resource">
+        </div>
+        <div class="form-group">
+            <label for="resource-file">Upload Resource (PDF, Word, etc.):</label>
+            <input type="file" id="resource-file">
+        </div>
+        <div class="form-group">
+            <label for="resource-link">Academic Literature Link:</label>
+            <input type="url" id="resource-link" placeholder="Enter the URL">
+        </div>
+        <div class="form-group">
+            <label for="video-link">Video Link:</label>
+            <input type="url" id="video-link" placeholder="Enter the video URL">
+        </div>
+        <button class="button" onclick="addLearningPath()">Create Learning Path</button>
+
+        <div class="learning-paths" id="learning-paths">
+            <h2>Your Learning Paths</h2>
+            <!-- Learning paths will be appended here -->
+        </div>
+    </div>
+
+    <script>
+        function addLearningPath() {
+            const title = document.getElementById('resource-title').value;
+            const fileInput = document.getElementById('resource-file');
+            const fileName = fileInput.files[0] ? fileInput.files[0].name : '';
+            const link = document.getElementById('resource-link').value;
+            const videoLink = document.getElementById('video-link').value;
+
+            if (title && (fileName || link || videoLink)) {
+                const learningPathContainer = document.getElementById('learning-paths');
+                const pathItem = document.createElement('div');
+                pathItem.className = 'path-item';
+                pathItem.innerHTML = `
+                    <h3>${title}</h3>
+                    <p><strong>Resource:</strong> ${fileName ? fileName : 'No file uploaded'}</p>
+                    <p><strong>Academic Link:</strong> ${link ? `<a href="${link}" target="_blank">${link}</a>` : 'No link provided'}</p>
+                    <p><strong>Video:</strong> ${videoLink ? `<a href="${videoLink}" target="_blank">${videoLink}</a>` : 'No video link provided'}</p>
+                `;
+                learningPathContainer.appendChild(pathItem);
+            } else {
+                alert('Please fill in the resource title and at least one resource (file, link, or video).');
+            }
+        }
+    </script>
+</body>
+</html>

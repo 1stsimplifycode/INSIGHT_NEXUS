@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Insight Nexus Quizzes</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #0078d4;
+        }
+
+        h1 {
+            text-align: center;
+            color: white;
+            font-size: 3rem;
+            margin: 20px 0;
+            font-family: 'Brush Script MT', cursive;
+        }
+
+        .quiz-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .palettes {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            max-width: 1000px;
+            margin: 20px 0;
+        }
+
+        .palette {
+            width: 300px;
+            height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .palette.yellow {
+            background-color: #ffeb3b;
+        }
+
+        .palette.blue {
+            background-color: #4e88c4;
+        }
+
+        button {
+            font-size: 1rem;
+            padding: 10px 20px;
+            color: white;
+            background-color: #0078d4;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #005a9e;
+        }
+
+        .manage-button {
+            align-self: flex-end;
+            margin-right: 20px;
+            background-color: #28a745;
+        }
+
+        .manage-button:hover {
+            background-color: #218838;
+        }
+
+        .question-container {
+            background-color: white;
+            padding: 20px;
+            margin: 40px 20px;
+            border-radius: 5px;
+            max-width: 800px;
+            margin: auto;
+            display: none; /* Hidden by default */
+        }
+
+        .question-container h2 {
+            margin-bottom: 20px;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .options button {
+            font-size: 1.2rem;
+            padding: 15px;
+            background-color: #e0e0e0;
+            color: #333;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .options button:hover {
+            background-color: #d0d0d0;
+        }
+
+        .result {
+            margin-top: 20px;
+            font-size: 1.2rem;
+            color: green;
+        }
+
+        .wrong {
+            color: red;
+        }
+
+    </style>
+</head>
+<body>
+    <!-- Main Page with Quiz Selection -->
+    <div class="quiz-container" id="quiz-selection">
+        <h1>Insight Nexus Quizzes</h1>
+        <div class="palettes">
+            <div class="palette yellow"><button id="js-quiz-btn">JavaScript Quiz</button></div>
+            <div class="palette blue"><button>Python Quiz</button></div>
+            <div class="palette yellow"><button>React Quiz</button></div>
+            <div class="palette blue"><button>Django Quiz</button></div>
+            <div class="palette yellow"><button>Flask Quiz</button></div>
+            <div class="palette blue"><button>Node.js Quiz</button></div>
+            <div class="palette yellow"><button>Angular Quiz</button></div>
+            <div class="palette blue"><button>Vue.js Quiz</button></div>
+            <div class="palette yellow"><button>Ruby Quiz</button></div>
+        </div>
+        <button class="manage-button">Manage Quizzes</button>
+    </div>
+
+    <!-- Quiz Page -->
+    <div class="question-container" id="quiz-page">
+        <h2 id="question-title">Which of the following is a JavaScript framework?</h2>
+        <div class="options" id="options-container">
+            <!-- Options will be inserted here by JavaScript -->
+        </div>
+        <div class="result" id="result"></div>
+        <button id="next-btn" style="display: none;">Next Question</button>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const jsQuizBtn = document.getElementById("js-quiz-btn");
+            const quizSelection = document.getElementById("quiz-selection");
+            const quizPage = document.getElementById("quiz-page");
+            const questionTitle = document.getElementById("question-title");
+            const optionsContainer = document.getElementById("options-container");
+            const resultDiv = document.getElementById("result");
+            const nextBtn = document.getElementById("next-btn");
+
+            // Quiz data
+            const questions = [
+                {
+                    question: "Which of the following is a JavaScript framework?",
+                    options: ["React", "Laravel", "Django", "Flask"],
+                    correct: 0
+                },
+                {
+                    question: "What does DOM stand for?",
+                    options: ["Document Object Model", "Display Object Management", "Digital Ordinance Model", "Desktop Oriented Mode"],
+                    correct: 0
+                },
+                {
+                    question: "Which company developed JavaScript?",
+                    options: ["Netscape", "Microsoft", "Google", "Apple"],
+                    correct: 0
+                },
+                {
+                    question: "Which symbol is used for comments in JavaScript?",
+                    options: ["//", "/*", "#", "<!--"],
+                    correct: 0
+                },
+                {
+                    question: "Which of the following is not a reserved word in JavaScript?",
+                    options: ["interface", "throws", "program", "short"],
+                    correct: 2
+                },
+                {
+                    question: "Which of the following is not a JavaScript data type?",
+                    options: ["Undefined", "Number", "Boolean", "Float"],
+                    correct: 3
+                },
+                {
+                    question: "Which function is used to parse a string to an integer in JavaScript?",
+                    options: ["parseInt()", "parseFloat()", "parse()", "Number()"],
+                    correct: 0
+                },
+                {
+                    question: "What will the code 'Boolean(10 > 9)' return?",
+                    options: ["true", "false", "NaN", "null"],
+                    correct: 0
+                },
+                {
+                    question: "Which operator is used to assign a value to a variable?",
+                    options: ["=", "==", "===", "->"],
+                    correct: 0
+                },
+                {
+                    question: "Which of the following methods is used to access HTML elements using JavaScript?",
+                    options: ["getElementById()", "getElementByClass()", "getElement()", "None of the above"],
+                    correct: 0
+                }
+            ];
+
+            let currentQuestionIndex = 0;
+            let score = 0;
+
+            function loadQuestion(index) {
+                const currentQuestion = questions[index];
+                questionTitle.textContent = currentQuestion.question;
+                optionsContainer.innerHTML = "";
+                currentQuestion.options.forEach((option, i) => {
+                    const button = document.createElement("button");
+                    button.textContent = option;
+                    button.onclick = function() {
+                        if (i === currentQuestion.correct) {
+                            score++;
+                            resultDiv.textContent = "Correct!";
+                            resultDiv.classList.remove("wrong");
+                        } else {
+                            resultDiv.textContent = `Wrong! The correct answer was: ${currentQuestion.options[currentQuestion.correct]}`;
+                            resultDiv.classList.add("wrong");
+                        }
+                        nextBtn.style.display = "block";
+                    };
+                    optionsContainer.appendChild(button);
+                });
+            }
+
+            nextBtn.addEventListener("click", function() {
+                currentQuestionIndex++;
+                if (currentQuestionIndex < questions.length) {
+                    loadQuestion(currentQuestionIndex);
+                    resultDiv.textContent = "";
+                    nextBtn.style.display = "none";
+                } else {
+                    resultDiv.textContent = `Quiz finished! Your score is ${score} out of ${questions.length}.`;
+                    nextBtn.style.display = "none";
+                }
+            });
+
+            jsQuizBtn.addEventListener("click", function() {
+                quizSelection.style.display = "none";
+                quizPage.style.display = "block";
+                loadQuestion(currentQuestionIndex);
+            });
+        });
+    </script>
+</body>
+</html>

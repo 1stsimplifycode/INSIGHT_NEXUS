@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>INSIGHT NEXUS</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url('portal.jpg'); /* Use url() for the background image */
+            background-size: cover; /* Ensure the background image covers the whole page */
+            background-repeat: no-repeat; /* Prevent background image from repeating */
+        }
+
+        header {
+            background-color: #f0f0f0;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #ddd; /* Add a border to visually separate header */
+        }
+
+        nav a {
+            margin-left: 1rem;
+            text-decoration: none;
+            color: #333;
+        }
+
+        main {
+            display: flex;
+            justify-content: space-around;
+            padding: 2rem;
+        }
+
+        .section {
+            text-align: center;
+            padding: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            background-color: #fff; /* Add a background color for better contrast */
+        }
+
+        .section:hover {
+            background-color: #f0f0f0;
+        }
+
+        .icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .section a {
+            text-decoration: none;
+            color: inherit;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>INSIGHT NEXUS</h1>
+        <nav>
+            <a href="#">Support</a>
+            <a href="#">Contact</a>
+        </nav>
+    </header>
+    <main>
+        <div class="section">
+            <a href="student_login.html">
+                <div class="icon">🏫</div>
+                <h2>Students</h2>
+                <p>Student Management Platform</p>
+            </a>
+        </div>
+        <div class="section">
+            <a href="teacher_login.html">
+                <div class="icon">👨‍🏫</div>
+                <h2>Teachers</h2>
+                <p>Teacher Management Platform</p>
+            </a>
+        </div>
+    </main>
+</body>
+
+</html>

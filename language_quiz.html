@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Application</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #3498db; /* Solid blue background */
+            color: #fff;
+            margin: 0;
+            height: 100vh; 
+            width: 100vw; 
+            background-attachment: fixed; 
+        }
+
+        h1 {
+            font-family: Arial', sans-serif;
+            font-size: 60px;
+            text-align: center;
+        }
+
+        h3 {
+            margin: 15px 0;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            margin: 10px 0;
+        }
+
+        .manage-quizzes-btn {
+            background-color: #2ecc71; 
+            color: white;
+            border-radius: 4px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            margin-bottom: 20px; 
+        }
+
+        button {
+            background-color: #2980b9; /* Slightly darker blue for buttons */
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+            display: inline-block; 
+            margin: 5px; 
+        }
+
+        button:hover {
+            background-color: #1f6691; /* Even darker blue for hover effect */
+        }
+
+        .quiz-results {
+            text-align: center;
+        }
+
+        .form-control {
+            display: block; 
+            width: 100%; 
+            padding: 10px; 
+            margin-bottom: 20px; 
+            box-sizing: border-box; 
+            border: 1px solid #ced4da; 
+            border-radius: 4px; 
+        }
+
+        @media (max-width: 768px) {
+            .quiz-card {
+                padding: 15px;
+            }
+
+            button {
+                padding: 8px 16px;
+                font-size: 14px;
+            }
+        }
+
+        .menu-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center; /* Center the cards within the container */
+            gap: 20px; /* Space between cards */
+        }
+
+        .quiz-card {
+            flex-basis: calc(50% - 20px); /* Adjust width minus gap for 2 cards per row */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 200px; /* Adjust based on your content */
+            background-color: #2ecc71; /* Solid green background for quiz cards */
+            color: #fff; /* White text for contrast */
+            border-radius: 10px;
+            padding: 20px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .quiz-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <!-- Quiz Application Root -->
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+    <script>
+        let app = Vue.createApp({
+            data() {
+                return {
+                    quizzes: [
+                        {
+                            title: "JavaScript Quiz",
+                            color: "#F0DB4F",
+                            questions: [
+                                {
+                                    text: "Which of the following is a JavaScript framework?",
+                                    answers: ["React", "Laravel", "Django", "Flask"],
+                                    correctAnswer: "React"
+                                },
+                                {
+                                    text: "What does '===’ operator do in JavaScript?",
+                                    answers: ["Compares values and types", "Compares only values", "Compares only types", "None of the above"],
+                                    correctAnswer: "Compares values and types"
+                                }
+                            ]
+                        },
+                        {
+                            title: "Python Quiz",
+                            color: "#3776AB",
+                            questions: [
+                                {
+                                    text: "Which keyword is used to define a function in Python?",
+                                    answers: ["def", "func", "function", "define"],
+                                    correctAnswer: "def"
+                                },
+                                {
+                                    text: "Which of the following is not a Python data type?",
+                                    answers: ["List", "Tuple", "Dictionary", "Tree"],
+                                    correctAnswer: "Tree"
+                                }
+                            ]
+                        },
+                        {
+                            title: "Java Quiz",
+                            color: "#5382A1",
+                            questions: [
+                                {
+                                    text: "What is the size of int data type in Java?",
+                                    answers: ["4 bytes", "8 bytes", "2 bytes", "1 byte"],
+                                    correctAnswer: "4 bytes"
+                                },
+                                {
+                                    text: "Which of the following is not a Java feature?",
+                                    answers: ["Object-oriented", "Platform-independent", "Pointer-based", "Secure"],
+                                    correctAnswer: "Pointer-based"
+                                }
+                            ]
+                        },
+                        {
+                            title: "C++ Quiz",
+                            color: "#00599C",
+                            questions: [
+                                {
+                                    text: "Which operator is used to access the members of a class in C++?",
+                                    answers: [".", "::", "->", "&"],
+                                    correctAnswer: "->"
+                                },
+                                {
+                                    text: "Which of the following is a valid C++ identifier?",
+                                    answers: ["2var", "var_name", "var-name", "var name"],
+                                    correctAnswer: "var_name"
+                                }
+                            ]
+                        }
+                    ],
+                    
+                    currentQuizIndex: 0,
+                    currentQuestionIndex: 0,
+                    userAnswers: [],
+                    showResults: false,
+                    showMenu: true,
+                    editMode: false,
+                    showQuizManager: false
+                };
+            },
+            computed: {
+                currentQuiz() {
+                    return this.quizzes[this.currentQuizIndex];
+                },
+                currentQuestion() {
+                    return this.currentQuiz.questions[this.currentQuestionIndex];
+                },
+                totalQuestions() {
+                    return this.currentQuiz.questions.length;
+                },
+                score() {
+                    let correctAnswers = 0;
+                    this.currentQuiz.questions.forEach((question, index) => {
+                        if (question.correctAnswer === this.userAnswers[index]) {
+                            correctAnswers++;
+                        }
+                    });
+                    return correctAnswers;
+                }
+            },
+            methods: {
+                answerSelected(answer) {
+                    this.userAnswers[this.currentQuestionIndex] = answer;
+                    if (this.currentQuestionIndex < this.currentQuiz.questions.length - 1) {
+                        this.currentQuestionIndex++;
+                    } else {
+                        this.showResults = true;
+                        this.editMode = false; 
+                        this.showMenu = false;
+                    }
+                },
+
+                restartQuiz() {
+                    this.currentQuestionIndex = 0;
+                    this.userAnswers = [];
+                    this.showResults = false;
+                },
+                startQuiz(quizIndex) {
+                    this.currentQuizIndex = quizIndex; 
+                    this.showMenu = false;
+                    this.editMode = false;
+                    this.showResults = false;
+                    this.currentQuestionIndex = 0;
+                    this.userAnswers = [];
+                },
+                backToMenu() {
+                    this.showResults = false;
+                    this.showMenu = true;
+                    this.editMode = false;
+                    this.currentQuestionIndex = 0;
+                    this.userAnswers = [];
+                },
+                addQuestionToQuiz(question) {
+                    this.quizzes[this.currentQuizIndex].questions.push(question);
+                },
+                toggleQuizManager() {
+                    this.showQuizManager = !this.showQuizManager;
+                    this.showMenu = !this.showQuizManager;
+                    this.editMode = false;
+                    this.showResults = false;
+                if (this.showQuizManager) {
+                        this.currentQuizIndex = 0;
+                        this.currentQuestionIndex = 0;
+                        this.userAnswers = [];
+                    }
+                },
+
+                updateQuizzes(updatedQuizzes) {
+                    this.quizzes = updatedQuizzes;
+                }
+            },
+            template: `
+            <div class="header">
+            <h1>Insight Nexus Quizzes</h1>
+            <button @click="toggleQuizManager" class="btn manage-quizzes-btn">Manage Quizzes</button>
+        </div>
+            <div v-if="showMenu" class="menu-container text-center">
+            <div 
+                class="quiz-card" 
+                v-for="(quiz, index) in quizzes" 
+                :key="quiz.title" 
+                :style="{ 
+                backgroundColor: quiz.color, 
+                color: '#fff',
+                padding: '20px',
+                borderRadius: '10px',
+                margin: '10px',
+                cursor: 'pointer'
+                }">
+                <button @click="startQuiz(index)" class="btn btn-primary">{{ quiz.title }}</button>
+            </div>
+        </div>
+
+            <div v-else>
+            <div v-if="!showQuizManager">
+                <div v-if="!showResults && !editMode">
+                <div class="card mt-4">
+                    <div class="card-header">
+                    <h3>Question {{ currentQuestionIndex + 1 }} of {{ totalQuestions }}</h3>
+                    </div>
+                    <div class="card-body">
+                    <p>{{ currentQuestion.text }}</p>
+                    <ul class="list-group">
+                        <li 
+                        v-for="answer in currentQuestion.answers" 
+                        :key="answer"
+                        class="list-group-item"
+                        @click="answerSelected(answer)">
+                        {{ answer }}
+                        </li>
+                    </ul>
+                    </div>
+                </div>
+                </div>
+                <div v-else-if="showResults" class="quiz-results mt-4">
+                <h3>Quiz Results</h3>
+                <p>You got {{ score }} out of {{ totalQuestions }} correct.</p>
+                <button @click="restartQuiz" class="btn btn-success">Restart Quiz</button>
+                <button @click="backToMenu" class="btn btn-primary">Back to Menu</button>
+                </div>
+                <div v-else-if="editMode">
+                <div class="card mt-4">
+                    <div class="card-header">
+                    <h3>Manage Quiz: {{ currentQuiz.title }}</h3>
+                    </div>
+                    <div class="card-body">
+                    <div v-for="(question, index) in currentQuiz.questions" :key="index">
+                        <p>Q{{ index + 1 }}: {{ question.text }}</p>
+                        <ul class="list-group">
+                        <li 
+                            v-for="(answer, aIndex) in question.answers" 
+                            :key="aIndex"
+                            class="list-group-item">
+                            {{ answer }} <span v-if="answer === question.correctAnswer">(Correct)</span>
+                        </li>
+                        </ul>
+                    </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+            <div v-else class="quiz-manager">
+                <div class="card mt-4">
+                <div class="card-header">
+                    <h3>Manage Quizzes</h3>
+                </div>
+                <div class="card-body">
+                    <div v-for="(quiz, index) in quizzes" :key="index" class="quiz-list-item">
+                    <h4>{{ quiz.title }}</h4>
+                    <button @click="editQuiz(index)" class="btn btn-primary">Edit Quiz</button>
+                    <button @click="deleteQuiz(index)" class="btn btn-danger">Delete Quiz</button>
+                    </div>
+                </div>
+                </div>
+            </div>
+            </div>
+            </div>
+            `
+        });
+
+        app.mount('#app');
+    </script>
+</body>
+</html>
